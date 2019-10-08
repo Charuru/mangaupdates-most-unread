@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Mangaupdates Most Unread
-// @version      0.0.2
+// @version      0.0.3
 // @description  A userscript to sort the mangaupdates mylist page to show the manga with highest number of unread chapters first.
 // @author       Charuru
 // @homepage     https://github.com/Charuru/mangaupdates-most-unread
@@ -21,7 +21,7 @@
   function sortUL(selector) {
     $(selector).children(".lrow").sort(function(a, b) {
       var diff = function (which) {
-        var readUpTo = $(which).find('.lcol_nopri .newlist').text().replace(/[^\d]/g, "")
+        var readUpTo = $(which).find('.newlist').text().replace(/[^\d]/g, "")
 
         if (!readUpTo)
           return 0
@@ -43,7 +43,17 @@
       return (upA < upB) ? -1 : (upA > upB) ? 1 : 0;
     }).prependTo(selector);
   }
+  
+  $(function() {
+    const btn = $('<span class="button">Click to sort by unreads</span>')
+    
+    $("#list_table").prepend(btn)
+    btn.click(function () {
+      sortUL("#list_table");
+    })
+  });
 
-  sortUL("#list_table tbody");
+
+  
 
 })();
